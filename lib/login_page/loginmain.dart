@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:untitled1/tab/tab_page.dart';
 
 class LogIn extends StatelessWidget {
   const LogIn({super.key});
@@ -18,40 +19,15 @@ class LogIn extends StatelessWidget {
             providers: providers,
             actions: [
               AuthStateChangeAction<SignedIn>((context, state) {
-
                 Navigator.pushReplacementNamed(context, '/profile');
               }),
             ],
           );
         },
         '/profile': (context) {
-          return ProfileScreen(
-            providers: providers,
-            actions: [
-              SignedOutAction((context) {
-                Navigator.pushReplacementNamed(context, '/sign-in');
-              }),
-            ],
-          );
+          return const TabPage();
         },
       },
     );
-    // return Scaffold(
-    //     appBar: AppBar(
-    //       title: const Text(
-    //         'login',
-    //       ),
-    //     ),
-    //     body: const Center(
-    //       child: Column(
-    //         children: [
-    //           Text('acvbbb'),
-    //           Text('acvbbb'),
-    //           Text('acvbbb'),
-    //           Text('acvbbb'),
-    //         ],
-    //       ),
-    //       ),
-    //     );
   }
 }
