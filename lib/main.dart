@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/tab/tab_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
+
+
+//    1//0edqDpZYFxycZCgYIARAAGA4SNwF-L9Irb7ki_3M21TwPw-UxHjfTbO1dwcfYT-vvvlBUg0QtMzU3yjUALj0EqR2hZ4mQYVDIWMU
+// web       1:239757356974:web:f6b2b57c584b71a4a1223f
+// android   1:239757356974:android:94ce5e96872f3771a1223f
+// ios       1:239757356974:ios:3893b295103d2d1ba1223f
+// macos     1:239757356974:ios:1c314a5f2b70d32ca1223f
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
