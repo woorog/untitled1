@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore 추가
+import 'package:untitled1/login_page/post.dart';
 import 'package:untitled1/tab/upload/upload_page.dart';
 
 class New extends StatelessWidget {
@@ -14,12 +16,12 @@ class New extends StatelessWidget {
     void uploadPost() {
       String title = titleController.text;
       String contents = contentsController.text;
+      final FirebaseAuth auth = FirebaseAuth.instance; //   유저 정보 가져오기
+      String userid = auth.currentUser!.uid;
+      Post newPost=Post(userid:userid, title: title, contents: contents);
 
-      // Firestore에 데이터 업로드
-      FirebaseFirestore.instance.collection('posts').add({
-        'title': title,
-        'contents': contents,
-      }).then((value) {
+      // Post 객체를 Firestore에 업로드
+      FirebaseFirestore.instance.collection('posts').add(newPost.toJson()).then((value) {
         // 업로드 성공 시 작업 수행
         print('Post uploaded successfully!');
       }).catchError((error) {
