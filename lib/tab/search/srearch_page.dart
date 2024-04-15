@@ -23,14 +23,40 @@ class SearchPage extends StatelessWidget {
             .map<String>((doc) => doc['title'] as String)
             .toList();
 
-
-        return ListView.builder(
-          itemCount: titles.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(titles[index]),
-            );
-          },
+        return MaterialApp(
+          home: Scaffold(
+            appBar: AppBar(
+              title: Text('testPage'),
+            ),
+            body: GridView.builder(
+              itemCount: titles.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    //event
+                    print('Grid item clicked: ${titles[index]}');
+                  },
+                  child: Container(
+                    color: Colors.grey,
+                    child: Center(
+                      child: Text(
+                        'Item: ${titles[index]}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         );
       },
     );
