@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../detailpage/detail_page.dart';
+
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
 
@@ -19,10 +21,15 @@ class SearchPage extends StatelessWidget {
             child: Text('Error: ${snapshot.error}'), // 에러가 발생했을 때 보여줄 위젯
           );
         }
-        final List<String> titles = snapshot.data!.docs
-            .map<String>((doc) => doc['title'] as String)
+        final List<Map<String, String>> titlesAndComments = snapshot.data!.docs
+            .map<Map<String, String>>((doc) =>
+        {
+          'title': doc['title'] as String,
+          'comment': doc['comment'] as String,
+        })
             .toList();
-
+        final List<String> titles = titlesAndComments.map((map) => map['title']!).toList();
+        final List<String> comment = titlesAndComments.map((map) => map['comment']!).toList();
         return MaterialApp(
           home: Scaffold(
             appBar: AppBar(
@@ -38,8 +45,13 @@ class SearchPage extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {
-                    //event
-                    print('Grid item clicked: ${titles[index]}');
+                    // 클릭된 항목의 제목 정보를 다음 화면으로 전달하면서 상세 페이지로 이동
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(title: titles[index]),
+                      ),
+                    );
                   },
                   child: Container(
                     color: Colors.grey,

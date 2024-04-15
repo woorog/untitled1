@@ -17,7 +17,7 @@ class New extends StatelessWidget {
       String contents = contentsController.text;
       final FirebaseAuth auth = FirebaseAuth.instance; //   유저 정보 가져오기
       String userid = auth.currentUser!.uid;
-      Post newPost = Post(userid: userid, title: title, contents: contents);
+      Post newPost = Post(title: title, contents: contents, userId: '', comment: '');
 
       // Post 객체를 Firestore에 업로드
 

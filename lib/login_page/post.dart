@@ -1,23 +1,27 @@
 class Post {
-  String userid;
+  String userId;
   String title;
+  String comment;
   String contents;
 
-  Post({required this.userid, required this.title, required this.contents});
+  Post({
+    required this.userId,
+    required this.title,
+    required this.comment,
+    required this.contents,
+  });
 
-  factory Post.fromJson(Map<String, dynamic> json) {
-    return Post(
-      userid: json['userId'] as String,
-      title: json['title'] as String,
-      contents: json['contents'] as String,
-    );
-  }
+  factory Post.fromJson(Map<String, dynamic> json) => Post(
+    userId: json["userId"],
+    title: json["title"],
+    comment: json["comment"],
+    contents: json["contents"],
+  );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'userId': userid,
-      'title': title,
-      'contents': contents,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    "userId": userId,
+    "title": title,
+    "comment": comment,
+    "contents": contents,
+  };
 }

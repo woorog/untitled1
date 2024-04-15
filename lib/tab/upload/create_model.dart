@@ -11,7 +11,7 @@ class CreateModel {
             );
 
     postsRef.add(
-      Post(userid: FirebaseAuth.instance.currentUser?.uid ?? '', title: title, contents: contents)
+      Post(userId: FirebaseAuth.instance.currentUser?.uid ?? '', title: title, contents: contents, comment: '')
     );
   }
 }
