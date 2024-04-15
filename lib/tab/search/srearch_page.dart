@@ -21,15 +21,9 @@ class SearchPage extends StatelessWidget {
             child: Text('Error: ${snapshot.error}'), // 에러가 발생했을 때 보여줄 위젯
           );
         }
-        final List<Map<String, String>> titlesAndComments = snapshot.data!.docs
-            .map<Map<String, String>>((doc) =>
-        {
-          'title': doc['title'] as String,
-          'comment': doc['comment'] as String,
-        })
+        final List<String> titles = snapshot.data!.docs
+            .map<String>((doc) => doc['title'] as String)
             .toList();
-        final List<String> titles = titlesAndComments.map((map) => map['title']!).toList();
-        final List<String> comment = titlesAndComments.map((map) => map['comment']!).toList();
         return MaterialApp(
           home: Scaffold(
             appBar: AppBar(
