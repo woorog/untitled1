@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled1/login_page/auth_gath.dart';
 import 'package:untitled1/tab/account/writing_page.dart';
 import 'package:untitled1/tab/home/home_page.dart';
 import 'package:untitled1/tab/search/srearch_page.dart';
@@ -33,7 +34,7 @@ class _TabPageState extends State<TabPage> {
               // 로그아웃 후에 로그인 페이지로 이동
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const LogIn()),
+                MaterialPageRoute(builder: (context) => const AuthGate()),
               );
             }).catchError((error) {
               print('Failed to log out:');
