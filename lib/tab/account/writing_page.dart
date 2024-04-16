@@ -20,7 +20,7 @@ class New extends StatelessWidget {
       String userid = auth.currentUser!.uid;
 
       Post newPost =
-          Post(title: title, contents: contents, userId: userid, comment: '');
+          Post(title: title, contents: contents, userId: userid);
       // Post 객체를 Firestore에 업로드
 
       FirebaseFirestore.instance
@@ -32,6 +32,9 @@ class New extends StatelessWidget {
         // 업로드 실패 시 작업 수행
         print('Failed to upload post: $error');
       });
+      titleController.clear();
+      contentsController.clear();
+      // 보낸이후에 보드 비우기.
     }
 
     return Scaffold(

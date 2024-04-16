@@ -27,9 +27,10 @@ class SearchPage extends StatelessWidget {
         // final List<String> userId = snapshot.data!.docs
         //     .map<String>((doc) => doc['userId'] as String)
         //     .toList();
+        final List<String> contents = snapshot.data!.docs.map<String>((doc) => doc['contents'] as String).toList();
         final List<String> titles = snapshot.data!.docs.map<String>((doc) => doc['title'] as String).toList();
         final List<String> userId = snapshot.data!.docs.map<String>((doc) => doc['userId'] as String).toList();
-        print(userId);
+
 
         return MaterialApp(
           home: Scaffold(
@@ -50,7 +51,12 @@ class SearchPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailPage(title: titles[index],userId: userId[index]),
+                        builder: (context) => DetailPage(
+                          title: titles[index],
+                          userId: userId[index],
+                          // comment:comment[index],
+                          contents:contents[index],
+                        ),
                       ),
                     );
                   },
