@@ -15,21 +15,19 @@ class New extends StatelessWidget {
     void uploadPost() {
       String title = titleController.text;
       String contents = contentsController.text;
+
       final FirebaseAuth auth = FirebaseAuth.instance; //   유저 정보 가져오기
       String userid = auth.currentUser!.uid;
 
-      Post newPost = Post(title: title, contents: contents, userId: userid, comment: '');
-
+      Post newPost =
+          Post(title: title, contents: contents, userId: userid, comment: '');
       // Post 객체를 Firestore에 업로드
 
       FirebaseFirestore.instance
           .collection('posts')
           .add(newPost.toJson())
           .then((value) {
-
-
-
-         print('Post uploaded successfully!');
+        print('Post uploaded successfully!');
       }).catchError((error) {
         // 업로드 실패 시 작업 수행
         print('Failed to upload post: $error');
