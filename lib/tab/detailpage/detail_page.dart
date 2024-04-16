@@ -6,8 +6,8 @@ class DetailPage extends StatefulWidget {
   final String title;
   final String userId;
   final String contents;
-
-  DetailPage({required this.title, required this.userId, required this.contents});
+  final String documentIds;
+  DetailPage({required this.title, required this.userId, required this.contents, required this.documentIds});
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -20,16 +20,26 @@ class _DetailPageState extends State<DetailPage> {
     String comment = commentController.text;
     //댓글 저장하는 코드
     FirebaseFirestore.instance.collection('comments').add({
-      'postId': widget.title,
-      'userId': widget.userId,
       'comment': comment,
-      'timestamp': DateTime.now(),
+      'userId':widget.userId,
+      'docu_id':widget.documentIds
     }).then((value) {
       // 댓글 제출 후 초기화
       commentController.clear();
     }).catchError((error) {
       //오류 처리
       print('Failed to submit comment: $error');
+    });
+  }
+
+
+  void deleteComment(String commentId) {
+    // 해당 댓글 삭제
+    FirebaseFirestore.instance.collection('comments').doc(commentId).delete().then((value) {
+      print('Comment deleted successfully');
+    }).catchError((error) {
+      // 오류 처리
+      print('Failed to delete comment: $error');
     });
   }
 
@@ -52,6 +62,10 @@ class _DetailPageState extends State<DetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              'did: ${widget.documentIds}',
+              style: const TextStyle(fontSize: 24),
+            ),
             Text(
               'Title: ${widget.title}',
               style: const TextStyle(fontSize: 24),
@@ -83,7 +97,7 @@ class _DetailPageState extends State<DetailPage> {
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 //'comments' 'postId' 같은친구 골라서 그 코멘트만 가져옴
-                stream: FirebaseFirestore.instance.collection('comments').where('postId', isEqualTo: widget.title).snapshots(),
+                stream: FirebaseFirestore.instance.collection('comments').where('docu_id', isEqualTo: widget.documentIds).snapshots(), // 수정된 부분: postId 대신 documentIds 사용
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -98,9 +112,19 @@ class _DetailPageState extends State<DetailPage> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       DocumentSnapshot commentDoc = snapshot.data!.docs[index];
+                      String commentId = commentDoc.id; // 댓글의 문서 ID
+                      String commentUserId = commentDoc['userId']; // 댓글을 작성한 사용자의 ID
+                      bool canDeleteComment = widget.userId == commentUserId;
                       return ListTile(
                         title: Text(commentDoc['comment']),
-                        subtitle: Text('By: ${commentDoc['userId']}'),
+                        subtitle: Text('By: ${commentUserId.substring(0, 4)}'),
+                        trailing: canDeleteComment ? IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            // 로그인한 사용자가 댓글을 작성한 경우에만 삭제 기능 활성화
+                            deleteComment(commentId);
+                          },
+                        ) : null,
                       );
                     },
                   );

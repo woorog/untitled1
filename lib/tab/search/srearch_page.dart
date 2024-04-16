@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import '../detailpage/detail_page.dart';
 
 class SearchPage extends StatelessWidget {
@@ -27,9 +26,19 @@ class SearchPage extends StatelessWidget {
         // final List<String> userId = snapshot.data!.docs
         //     .map<String>((doc) => doc['userId'] as String)
         //     .toList();
-        final List<String> contents = snapshot.data!.docs.map<String>((doc) => doc['contents'] as String).toList();
-        final List<String> titles = snapshot.data!.docs.map<String>((doc) => doc['title'] as String).toList();
-        final List<String> userId = snapshot.data!.docs.map<String>((doc) => doc['userId'] as String).toList();
+
+        List<String> documentIds = [];
+        List<String> contents = [];
+        List<String> titles = [];
+        List<String> userId = [];
+
+        // 각 문서의 데이터를 가져와 리스트에 추가합니다.
+        snapshot.data!.docs.forEach((doc) {
+          documentIds.add(doc.id); // 문서 ID를 리스트에 추가합니다.
+          contents.add(doc['contents'] as String);
+          titles.add(doc['title'] as String);
+          userId.add(doc['userId'] as String);
+        });
 
 
         return MaterialApp(
@@ -54,7 +63,7 @@ class SearchPage extends StatelessWidget {
                         builder: (context) => DetailPage(
                           title: titles[index],
                           userId: userId[index],
-                          // comment:comment[index],
+                          documentIds:documentIds[index],
                           contents:contents[index],
                         ),
                       ),
