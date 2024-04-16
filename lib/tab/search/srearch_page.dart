@@ -21,9 +21,16 @@ class SearchPage extends StatelessWidget {
             child: Text('Error: ${snapshot.error}'), // 에러가 발생했을 때 보여줄 위젯
           );
         }
-        final List<String> titles = snapshot.data!.docs
-            .map<String>((doc) => doc['title'] as String)
-            .toList();
+        // final List<String> titles = snapshot.data!.docs
+        //     .map<String>((doc) => doc['title'] as String)
+        //     .toList();
+        // final List<String> userId = snapshot.data!.docs
+        //     .map<String>((doc) => doc['userId'] as String)
+        //     .toList();
+        final List<String> titles = snapshot.data!.docs.map<String>((doc) => doc['title'] as String).toList();
+        final List<String> userId = snapshot.data!.docs.map<String>((doc) => doc['userId'] as String).toList();
+        print(userId);
+
         return MaterialApp(
           home: Scaffold(
             appBar: AppBar(
@@ -43,7 +50,7 @@ class SearchPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailPage(title: titles[index]),
+                        builder: (context) => DetailPage(title: titles[index],userId: userId[index]),
                       ),
                     );
                   },

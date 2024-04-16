@@ -17,7 +17,8 @@ class New extends StatelessWidget {
       String contents = contentsController.text;
       final FirebaseAuth auth = FirebaseAuth.instance; //   유저 정보 가져오기
       String userid = auth.currentUser!.uid;
-      Post newPost = Post(title: title, contents: contents, userId: '', comment: '');
+
+      Post newPost = Post(title: title, contents: contents, userId: userid, comment: '');
 
       // Post 객체를 Firestore에 업로드
 
@@ -60,7 +61,7 @@ class New extends StatelessWidget {
                 fillColor: Colors.white70,
               ),
             ),
-            const SizedBox(height: 10), // 간격을 조절하기 위한 SizedBox 추가
+            const SizedBox(height: 10), // 간격 조절
             Expanded(
               child: TextFormField(
                 controller: contentsController,

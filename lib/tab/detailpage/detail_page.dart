@@ -4,8 +4,9 @@ import 'package:untitled1/tab/tab_page.dart';
 
 class DetailPage extends StatelessWidget {
   final String title;
+  final String userId;
 
-  DetailPage({required this.title});
+  DetailPage({required this.title, required this.userId});
 
   @override
   Widget build(BuildContext context) {
