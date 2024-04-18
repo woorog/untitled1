@@ -4,7 +4,6 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/tab/tab_page.dart';
 
-import '../main.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -25,7 +24,7 @@ class AuthGate extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: Image.asset('assets/flutterfire_300x.png'),
+                  child: Image.asset('assets/download.jpg'),
                 ),
               );
             },

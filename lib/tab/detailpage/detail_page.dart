@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -7,6 +7,7 @@ class DetailPage extends StatefulWidget {
   final String userId;
   final String contents;
   final String documentIds;
+
   DetailPage({required this.title, required this.userId, required this.contents, required this.documentIds});
 
   @override
@@ -16,22 +17,46 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   TextEditingController commentController = TextEditingController();
 
+  String? currentUserId;
+
+  @override
+  void initState() {
+    super.initState();
+    // initState에서 현재 사용자 ID 가져오기
+    getCurrentUserId();
+  }
+
+  void getCurrentUserId() {
+    // 현재 사용자의 ID 가져오기
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        setState(() {
+          currentUserId = user.uid;
+        });
+      }
+    });
+  }
+
   void submitComment() {
     String comment = commentController.text;
-    //댓글 저장하는 코드
+    // 현재 사용자의 ID가 없으면 댓글을 추가하지 않음
+    if (currentUserId == null) {
+      print('Current user ID is null');
+      return;
+    }
+    // 댓글 저장하는 코드
     FirebaseFirestore.instance.collection('comments').add({
       'comment': comment,
-      'userId':widget.userId,
-      'docu_id':widget.documentIds
+      'userId': currentUserId,
+      'docu_id': widget.documentIds
     }).then((value) {
       // 댓글 제출 후 초기화
       commentController.clear();
     }).catchError((error) {
-      //오류 처리
+      // 오류 처리
       print('Failed to submit comment: $error');
     });
   }
-
 
   void deleteComment(String commentId) {
     // 해당 댓글 삭제
@@ -114,17 +139,18 @@ class _DetailPageState extends State<DetailPage> {
                       DocumentSnapshot commentDoc = snapshot.data!.docs[index];
                       String commentId = commentDoc.id; // 댓글의 문서 ID
                       String commentUserId = commentDoc['userId']; // 댓글을 작성한 사용자의 ID
-                      bool canDeleteComment = widget.userId == commentUserId;
+                      bool canDeleteComment = currentUserId == commentUserId;
                       return ListTile(
                         title: Text(commentDoc['comment']),
                         subtitle: Text('By: ${commentUserId.substring(0, 4)}'),
-                        trailing: canDeleteComment ? IconButton(
-                          icon: Icon(Icons.delete),
+                        trailing: canDeleteComment
+                            ? IconButton(icon: const Icon(Icons.delete),
                           onPressed: () {
                             // 로그인한 사용자가 댓글을 작성한 경우에만 삭제 기능 활성화
                             deleteComment(commentId);
                           },
-                        ) : null,
+                        )
+                            : null,
                       );
                     },
                   );
