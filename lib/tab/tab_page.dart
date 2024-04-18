@@ -6,7 +6,6 @@ import 'package:untitled1/tab/account/writing_page.dart';
 import 'package:untitled1/tab/home/home_page.dart';
 import 'package:untitled1/tab/search/srearch_page.dart';
 
-import '../login_page/loginmain.dart';
 
 class TabPage extends StatefulWidget {
   const TabPage({super.key});
