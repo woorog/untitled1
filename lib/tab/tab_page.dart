@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled1/login_page/auth_gath.dart';
 import 'package:untitled1/tab/account/writing_page.dart';
 import 'package:untitled1/tab/home/home_page.dart';
+import 'package:untitled1/tab/home/home_test.dart';
 import 'package:untitled1/tab/search/srearch_page.dart';
 
 
@@ -17,7 +18,7 @@ class TabPage extends StatefulWidget {
 class _TabPageState extends State<TabPage> {
   int currentIndex = 0;
   final pages=const [
-    HomePage(),
+    Test(),
     SearchPage(),
     New(),
   ];
